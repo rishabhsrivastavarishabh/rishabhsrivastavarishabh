@@ -2,7 +2,7 @@
 
 **Windows Copilot + Task Automation + Local AI Agent**
 
-Offline-capable and focused on OS-level control.
+Offline capable and focused on OS-level control.
 
 ## 🎯 Core Vision
 
@@ -22,7 +22,7 @@ A persistent desktop AI agent that can **listen → plan → execute → notify*
 
 ### 1) Wake + Voice Layer
 
-- Wake-word detection (e.g., "Hey Nova")
+- Wake-word detection (for example, "Hey Nova")
 - Offline speech recognition
 - Multilingual support
 
@@ -31,32 +31,32 @@ A persistent desktop AI agent that can **listen → plan → execute → notify*
 ### 2) Brain Layer (Hybrid AI)
 
 - **Offline model** for fast local commands:
-  - Open app
+  - Open applications
   - Check messages
-  - Create file
-  - Simple writing
+  - Create files
+  - Do simple writing
 - **Cloud model** for complex reasoning:
-  - Email drafting
-  - Research
-  - PPT generation
-  - Multi-step tasks
+  - Draft emails
+  - Run research tasks
+  - Generate PPT content
+  - Handle multi-step workflows
 
 A **router** decides local vs cloud execution based on latency, privacy, cost, and complexity.
 
 ### 3) Action Engine (Core Differentiator)
 
-Converts intent into real OS-level actions.
+This layer converts intent into real OS-level actions.
 
 Capabilities:
 
-- Open/control apps
+- Open and control apps
 - Read notifications
-- Browser automation
+- Automate browser steps
 - Create PPT/Word files
-- File operations
-- WhatsApp Web checking
-- Email drafting flow
-- Automation workflows
+- Perform file operations
+- Check WhatsApp Web
+- Draft emails for approval
+- Run automation workflows
 
 **Suggested tech:** Windows UI Automation API, Playwright/Selenium, PowerShell, local tool plugins
 
@@ -67,16 +67,16 @@ Example: *"Check WhatsApp messages and notify me."*
 Responsibilities:
 
 - Persistent background workers
-- Scheduler + queue
-- State memory
-- Retry/failure handling
-- Safe cancellation/resume
+- Scheduler and queue management
+- State and task memory
+- Retry and failure handling
+- Safe cancellation and resume
 
 ### 5) Notification + Conversation Layer
 
-- Voice response (TTS)
-- Desktop popups
-- Ongoing chat context
+- Voice responses (TTS)
+- Desktop notifications/popups
+- Ongoing conversational context
 - Safe interruption handling
 
 ## ⭐ Realistic Use Cases
@@ -84,11 +84,11 @@ Responsibilities:
 - “Open PPT and create slides from this topic.”
 - “Check unread WhatsApp messages.”
 - “Summarize this PDF.”
-- “Write email and send after approval.”
-- “Monitor folder and alert if a new file appears.”
+- “Write an email and send it after my approval.”
+- “Monitor a folder and alert me if a new file appears.”
 - “Research this topic while I work.”
 - “Fill this form automatically.”
-- “Give me a daily briefing when PC starts.”
+- “Give me a daily briefing when my PC starts.”
 
 ## 🧱 MVP Scope
 
@@ -103,8 +103,8 @@ Build first:
 
 ## 🚀 Differentiation
 
-- Offline-capable
-- Action-first (not chat-first)
+- Offline capable
+- Action first (not chat first)
 - Persistent desktop agent
 - Background workflows
 - OS-level automation
