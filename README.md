@@ -1,22 +1,143 @@
-# 💫 About Me:
-i'm Student <br>B.Tech<br>Computer Science and Engineering
+# Sarath AI
 
+**Windows Copilot + Task Automation + Local AI Agent**
 
-## 🌐 Socials:
-[![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?logo=Facebook&logoColor=white)](https://facebook.com/RishabhSrivastava.Rishabh) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/rishabhsrivastava.rishabh) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/rishabh-srivastava-rishabh) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/RishabhSrivast_) [![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:rishabhsrivastava8873@gmail.com) 
+Offline-capable and focused on OS-level control.
 
-# 💻 Tech Stack:
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-# 📊 GitHub Stats:
-![](https://github-readme-stats.vercel.app/api?username=rishabhsrivastavarishabh&theme=dark&hide_border=false&include_all_commits=false&count_private=false)<br/>
-![](https://nirzak-streak-stats.vercel.app/?user=rishabhsrivastavarishabh&theme=dark&hide_border=false)<br/>
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=rishabhsrivastavarishabh&theme=dark&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
+## 🎯 Core Vision
 
----
-[![](https://visitcount.itsvg.in/api?id=rishabhsrivastavarishabh&icon=0&color=0)](https://visitcount.itsvg.in)
+A persistent desktop AI agent that can **listen → plan → execute → notify** across applications with minimal user interaction.
 
-  ## 💰 You can help me by Donating
-  [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/rishabhsrivastava2) 
+## 🔑 Key Principles
 
-  
-<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+1. **Persistent agent** (always-running background service)
+2. **Hybrid intelligence** (local model + cloud model)
+3. **Action engine** (task execution, not just chat)
+4. **Multilingual voice interface**
+5. **Task memory + notification system**
+
+> If the action engine is weak, the product becomes just another chatbot.
+
+## 🧠 High-Level Architecture
+
+### 1) Wake + Voice Layer
+
+- Wake-word detection (e.g., "Hey Nova")
+- Offline speech recognition
+- Multilingual support
+
+**Suggested tech:** Whisper.cpp, Vosk, Coqui STT
+
+### 2) Brain Layer (Hybrid AI)
+
+- **Offline model** for fast local commands:
+  - Open app
+  - Check messages
+  - Create file
+  - Simple writing
+- **Cloud model** for complex reasoning:
+  - Email drafting
+  - Research
+  - PPT generation
+  - Multi-step tasks
+
+A **router** decides local vs cloud execution based on latency, privacy, cost, and complexity.
+
+### 3) Action Engine (Core Differentiator)
+
+Converts intent into real OS-level actions.
+
+Capabilities:
+
+- Open/control apps
+- Read notifications
+- Browser automation
+- Create PPT/Word files
+- File operations
+- WhatsApp Web checking
+- Email drafting flow
+- Automation workflows
+
+**Suggested tech:** Windows UI Automation API, Playwright/Selenium, PowerShell, local tool plugins
+
+### 4) Background Task Manager
+
+Example: *"Check WhatsApp messages and notify me."*
+
+Responsibilities:
+
+- Persistent background workers
+- Scheduler + queue
+- State memory
+- Retry/failure handling
+- Safe cancellation/resume
+
+### 5) Notification + Conversation Layer
+
+- Voice response (TTS)
+- Desktop popups
+- Ongoing chat context
+- Safe interruption handling
+
+## ⭐ Realistic Use Cases
+
+- “Open PPT and create slides from this topic.”
+- “Check unread WhatsApp messages.”
+- “Summarize this PDF.”
+- “Write email and send after approval.”
+- “Monitor folder and alert if a new file appears.”
+- “Research this topic while I work.”
+- “Fill this form automatically.”
+- “Give me a daily briefing when PC starts.”
+
+## 🧱 MVP Scope
+
+Build first:
+
+1. Wake word
+2. Voice-based app launch
+3. AI-powered Word/PPT creation
+4. One background workflow (WhatsApp Web monitor)
+5. Notification system
+6. Simple hybrid local/cloud routing
+
+## 🚀 Differentiation
+
+- Offline-capable
+- Action-first (not chat-first)
+- Persistent desktop agent
+- Background workflows
+- OS-level automation
+- Personal AI operating environment
+
+**Positioning:** *Personal AI Operating Layer*
+
+## ⚠️ Hard Problems
+
+1. Reliable UI automation
+2. Offline model resource usage
+3. Wake-word accuracy
+4. Security and permissions
+5. Multilingual voice quality
+6. Task-planning reliability
+7. Deep Windows integration complexity
+
+## 💰 Future Extensions
+
+- Multi-device agent (PC + mobile)
+- Personal memory graph
+- Autonomous workflows
+- Team agent mode
+- Plugin marketplace
+- Local private AI workspace
+- Developer SDK
+
+## 🧾 One-Line Pitch
+
+“An always-running hybrid AI desktop agent that understands voice, performs real computer tasks in the background, and behaves like a personal operating layer.”
+
+## ✍️ Design Prompt
+
+```text
+Design a hybrid AI desktop voice agent that runs persistently on Windows, activates on startup, supports offline and online intelligence routing, executes real OS-level tasks through an action engine, handles background workflows, provides multilingual voice interaction, and notifies users when tasks are completed. Focus on architecture, task planning, action execution, memory, security, and extensibility.
+```
