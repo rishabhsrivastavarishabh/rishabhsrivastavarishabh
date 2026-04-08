@@ -1,53 +1,60 @@
-# OM AI Model
+# OM (Open Media) AI Model
 
-**OM (Omni Modal)** - An AI model for image editing and text generation.
+**Developed by: Open Media Intelligence**  
+**Version: 2.0.0 (Agent Mode Enabled)**
+
+## Overview
+
+OM (Open Media) is a versatile AI model designed for image editing and text generation tasks. It features a dual-mode architecture that combines:
+
+1. **Local Processing**: Lightweight on-device image editing and description generation
+2. **Agent Mode**: Intelligent orchestration with external AI APIs for advanced capabilities
 
 ## Features
 
-- **Image Description**: Generate text descriptions from images
-- **Image Editing**: Apply various edits to images (enhance, filter, segmentation)
-- **Flexible Architecture**: Works with or without torchvision
-  - Uses pre-trained ResNet when torchvision is available
-  - Falls back to simple CNN backbone otherwise
+### Core Capabilities
+- **Image Description**: Generate text descriptions from input images
+- **Image Editing**: Apply enhancements, filters, and transformations
+- **Agent Mode**: Connect with external AI APIs (OpenAI, Anthropic, Stability AI)
+
+### Supported API Providers
+- **OpenAI**: GPT-4 Vision for image analysis, DALL-E for image editing
+- **Anthropic**: Claude Vision for detailed image understanding
+- **Stability AI**: Advanced image generation and editing
+- **Custom Endpoints**: Extendable to any REST API
 
 ## Installation
 
-### Basic Requirements
-```bash
-pip install torch pillow numpy
-```
+### Requirements
+- Python 3.8+
+- PyTorch
+- PIL/Pillow
+- NumPy
+- requests (for Agent Mode)
 
-### For Better Performance (Optional)
+### Optional (Recommended)
+- torchvision (for pre-trained ResNet backbone)
+
 ```bash
-pip install torchvision
+pip install torch pillow numpy requests
+pip install torchvision  # Optional, for better performance
 ```
 
 ## Usage
 
-### Basic Example
+### Basic Usage - Local Model
 
 ```python
-from PIL import Image
 from om_model import OMModel, Vocabulary
+from PIL import Image
 
 # Initialize the model
 model = OMModel(vocab_size=10000)
-print(f"Model Name: {model.name}")
-print(f"Version: {model.version}")
-
-# Create a vocabulary
-vocab = Vocabulary(max_size=1000)
-sample_texts = [
-    "a dog playing in the park",
-    "a cat sitting on a couch",
-    "beautiful sunset over the ocean"
-]
-vocab.build_vocab(sample_texts)
 
 # Load an image
 image = Image.open("your_image.jpg")
 
-# Generate description
+# Generate image description
 description = model.describe_image(image, idx_to_word=vocab.idx2word)
 print(f"Description: {description}")
 
@@ -55,112 +62,234 @@ print(f"Description: {description}")
 edited_image = model.edit_image(image, edit_type='enhance')
 edited_image.save("edited_image.jpg")
 
-# Save the model
+# Save/Load model weights
 model.save_model("om_model.pth")
-
-# Load the model later
 model.load_model("om_model.pth")
 ```
 
-### Advanced Usage
-
-#### Image Editing Options
+### Agent Mode - With API Integration
 
 ```python
-# Enhancement editing
-edited = model.edit_image(image, edit_type='enhance')
+from om_model import OMModel, OMAgent
+from PIL import Image
 
-# Filter application
-edited = model.edit_image(image, edit_type='filter')
+# Initialize local model
+local_model = OMModel(vocab_size=10000)
 
-# Manual parameters
-params = {
-    'brightness': 0.5,
-    'contrast': 0.3,
-    'saturation': 0.2
-}
-edited = model.edit_image(image, edit_type='enhance', params=params)
+# Initialize Agent with API key
+agent = OMAgent(
+    local_model=local_model,
+    api_provider="openai",  # or "anthropic", "stability"
+    api_key="your-api-key"  # Or set OPENAI_API_KEY environment variable
+)
+
+# Load an image
+image = Image.open("your_image.jpg")
+
+# Describe image using API (falls back to local if no API key)
+description = agent.process(image=image, task="describe")
+print(f"Description: {description}")
+
+# Edit image with text instruction
+edited_image = agent.process(
+    image=image, 
+    text_input="make it brighter and more vibrant",
+    task="edit"
+)
+edited_image.save("edited_image.jpg")
+
+# Comprehensive analysis (combines local + API)
+analysis = agent.process(image=image, task="analyze")
+print(f"Local Analysis: {analysis['local_analysis']}")
+print(f"API Analysis: {analysis['api_analysis']}")
 ```
 
-#### Custom Training
+### Environment Variables
 
-```python
-import torch
-from torch.utils.data import DataLoader
+Set your API keys as environment variables:
 
-# Prepare your dataset
-# (Implement custom Dataset class for your data)
-
-# Initialize model
-model = OMModel(vocab_size=10000)
-
-# Training loop
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-criterion = torch.nn.CrossEntropyLoss()
-
-for epoch in range(num_epochs):
-    for images, captions in dataloader:
-        optimizer.zero_grad()
-        
-        outputs = model(images, captions)
-        loss = criterion(outputs['text_logits'], captions)
-        
-        loss.backward()
-        optimizer.step()
+```bash
+export OPENAI_API_KEY="your-openai-key"
+export ANTHROPIC_API_KEY="your-anthropic-key"
+export STABILITY_API_KEY="your-stability-key"
 ```
 
-## Model Architecture
+## Architecture
 
-The OM model consists of:
+### OMModel Components
 
-1. **Image Encoder**: CNN-based encoder (ResNet or simple CNN)
-2. **Text Decoder**: LSTM-based sequence generator
-3. **Image Editing Heads**: 
-   - Filter prediction head
-   - Enhancement parameter head
-   - Segmentation head (optional)
+1. **ImageEncoder**: Encodes images into feature vectors
+   - Uses ResNet-50 (with torchvision) or SimpleCNN (fallback)
+   
+2. **TextDecoder**: LSTM-based sequence generator for captions
+   
+3. **ImageEditHead**: Predicts editing parameters
+   - Enhancement head (brightness, contrast, saturation, etc.)
+   - Filter head (convolution kernels)
+
+### OMAgent Features
+
+- **Smart Fallback**: Automatically uses local model when API is unavailable
+- **Unified Interface**: Single `process()` method for all tasks
+- **Multi-Provider Support**: Switch between API providers seamlessly
+- **Instruction Mapping**: Converts natural language to local operations
 
 ## API Reference
 
 ### OMModel
 
-Main model class with the following methods:
-
-- `__init__(vocab_size, embed_size, hidden_size, encoder_model, max_seq_length)`: Initialize model
-- `forward(images, captions)`: Forward pass
-- `describe_image(image, tokenizer, idx_to_word)`: Generate image description
-- `edit_image(image, edit_type, params)`: Edit image
-- `save_model(path)`: Save model weights
-- `load_model(path)`: Load model weights
-
-### Vocabulary
-
-Vocabulary management class:
-
-- `build_vocab(texts)`: Build vocabulary from texts
-- `encode(text)`: Convert text to token indices
-- `decode(indices)`: Convert indices to text
-
-## File Structure
-
-```
-/workspace/
-├── om_model.py          # Main model implementation
-├── om_model.pth         # Saved model weights (after training)
-└── README.md            # This file
+```python
+class OMModel:
+    def __init__(self, vocab_size=10000, embed_size=512, hidden_size=512):
+        """Initialize OM model."""
+        
+    def describe_image(self, image, tokenizer=None, idx_to_word=None) -> str:
+        """Generate text description from image."""
+        
+    def edit_image(self, image, edit_type='enhance', params=None) -> Image.Image:
+        """Edit image based on type and parameters."""
+        
+    def save_model(self, path: str):
+        """Save model weights."""
+        
+    def load_model(self, path: str):
+        """Load model weights."""
 ```
 
-## Notes
+### OMAgent
 
-- The model uses a simple CNN backbone by default if torchvision is not installed
-- For production use, install torchvision to use pre-trained ResNet models
-- Training on large datasets is recommended for better performance
-- The model supports both CPU and GPU inference
+```python
+class OMAgent:
+    def __init__(self, local_model=None, api_provider="openai", 
+                 api_key=None, use_local_first=True):
+        """Initialize OM Agent with optional API integration."""
+        
+    def process(self, image=None, text_input=None, task="describe"):
+        """
+        Unified processing method.
+        
+        Args:
+            image: Input PIL Image
+            text_input: Text prompt/instruction
+            task: One of "describe", "edit", "analyze"
+            
+        Returns:
+            str, Image.Image, or Dict based on task
+        """
+        
+    def describe_image_api(self, image, prompt) -> str:
+        """Call external API for image description."""
+        
+    def edit_image_api(self, image, instruction) -> Image.Image:
+        """Call external API for image editing."""
+```
+
+## Examples
+
+### Example 1: Basic Image Description
+
+```python
+from om_model import OMModel, Vocabulary
+from PIL import Image
+
+model = OMModel()
+image = Image.open("photo.jpg")
+
+# Create vocabulary
+vocab = Vocabulary()
+vocab.build_vocab(["sample text for vocabulary"])
+
+description = model.describe_image(image, idx_to_word=vocab.idx2word)
+print(description)
+```
+
+### Example 2: Image Enhancement
+
+```python
+from om_model import OMModel
+from PIL import Image
+
+model = OMModel()
+image = Image.open("dark_photo.jpg")
+
+# Enhance with custom parameters
+edited = model.edit_image(
+    image, 
+    edit_type='enhance',
+    params={
+        'brightness': 0.3,
+        'contrast': 0.2,
+        'saturation': 0.1
+    }
+)
+edited.save("enhanced_photo.jpg")
+```
+
+### Example 3: Agent with Multiple Providers
+
+```python
+from om_model import OMModel, OMAgent
+
+model = OMModel()
+
+# OpenAI Agent
+openai_agent = OMAgent(local_model=model, api_provider="openai")
+
+# Anthropic Agent  
+anthropic_agent = OMAgent(local_model=model, api_provider="anthropic")
+
+# Compare results
+image = Image.open("test.jpg")
+result1 = openai_agent.process(image=image, task="describe")
+result2 = anthropic_agent.process(image=image, task="describe")
+```
+
+## Model Specifications
+
+- **Name**: OM (Open Media)
+- **Developer**: Open Media Intelligence
+- **Total Parameters**: ~17 million
+- **Input Size**: 224x224 RGB images
+- **Output**: Text tokens (descriptions) or edited images
+- **License**: MIT
+
+## Performance Notes
+
+- **Without torchvision**: Uses SimpleCNN backbone (faster initialization, lower accuracy)
+- **With torchvision**: Uses ResNet-50 backbone (better accuracy, requires download)
+- **Agent Mode**: Latency depends on API response time
+- **Local Mode**: Real-time processing on CPU, faster on GPU
+
+## Troubleshooting
+
+### "torchvision not available" Warning
+Install torchvision for better performance:
+```bash
+pip install torchvision
+```
+
+### "No API Key found" Warning
+Set your API key as an environment variable or pass it directly:
+```python
+agent = OMAgent(api_key="your-key")
+# or
+export OPENAI_API_KEY="your-key"
+```
+
+### Memory Issues
+Reduce model size:
+```python
+model = OMModel(vocab_size=5000, embed_size=256, hidden_size=256)
+```
+
+## Contributing
+
+Contributions are welcome! Please submit issues and pull requests to improve OM.
 
 ## License
 
-MIT License
+MIT License - See LICENSE file for details.
 
-## Author
+---
 
-OM AI Team
+**OM (Open Media)** - *Intelligent Image Processing by Open Media Intelligence*

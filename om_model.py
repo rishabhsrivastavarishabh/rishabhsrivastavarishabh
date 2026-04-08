@@ -824,7 +824,7 @@ class Vocabulary:
 # Example usage and demonstration
 if __name__ == "__main__":
     print("=" * 60)
-    print("OM AI Model - Image Editing and Text Generation")
+    print("OM (Open Media) AI Model - by Open Media Intelligence")
     print("=" * 60)
     
     # Initialize model
@@ -858,7 +858,7 @@ if __name__ == "__main__":
     
     # Test image editing
     print("\n" + "-" * 60)
-    print("Testing Image Editing:")
+    print("Testing Local Image Editing:")
     print("-" * 60)
     edited_image = model.edit_image(dummy_image, edit_type='enhance')
     print(f"Original Image Size: {dummy_image.size}")
@@ -872,4 +872,26 @@ if __name__ == "__main__":
     
     print("\n" + "=" * 60)
     print("OM Model initialized successfully!")
+    print("=" * 60)
+
+    # Test Agent Mode
+    print("\n" + "=" * 60)
+    print("Testing OM Agent Mode:")
+    print("=" * 60)
+    
+    # Initialize agent with local model only (no API key)
+    agent = OMAgent(local_model=model, api_provider="openai")
+    print(f"\nAgent: {agent}")
+    
+    # Test local fallback
+    print("\nTesting Agent with Local Fallback:")
+    result = agent.process(image=dummy_image, task="describe")
+    if isinstance(result, str) and len(result) > 100:
+        print(f"Result: {result[:100]}...")
+    else:
+        print(f"Result: {result}")
+    
+    print("\n" + "=" * 60)
+    print("OM (Open Media) Model initialized successfully!")
+    print("Developed by: Open Media Intelligence")
     print("=" * 60)
