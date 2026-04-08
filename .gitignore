@@ -1,1 +1,32 @@
-Nothing should be ignored in this case, as the changes only include source/config files (.md and .py) without any build artifacts, dependencies, or temporary files.
+```
+# Model files
+*.pth
+*.ckpt
+*.bin
+*.model
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.ENV
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+```
